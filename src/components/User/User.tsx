@@ -6,8 +6,7 @@ import {
   Location,
   ContainerFollow,
   ResultFollowers,
-  ContainerFollowers,
-  ContainerFollowing,
+  LinkProjects,
 } from "../User/User";
 
 import { MdLocationPin } from "react-icons/md";
@@ -25,21 +24,27 @@ const User = ({
     <Container>
       <ImageAvatar src={avatar_url} alt={login} />
       <Name>{login}</Name>
-      <Location>
-        <MdLocationPin />
-        {location}
-      </Location>
+      {location && (
+        <Location>
+          <MdLocationPin />
+          <span>{location}</span>
+        </Location>
+      )}
       <ContainerFollow>
-        <ContainerFollowers>
-          <ResultFollowers>Seguidores:</ResultFollowers>
-          <ResultFollowers>{followers}:</ResultFollowers>
-        </ContainerFollowers>
-        <ContainerFollowing>
-          <ResultFollowers>Seguindo:</ResultFollowers>
+        <div>
+          <span>Seguidores:</span>
+          <ResultFollowers>{followers}</ResultFollowers>
+        </div>
+        <div>
+          <span>Seguindo:</span>
           <ResultFollowers>{following}</ResultFollowers>
-        </ContainerFollowing>
+        </div>
       </ContainerFollow>
-      <Link to={`/repos/${login}`}>Ver melhores projetos</Link>
+      <LinkProjects>
+        <Link to={`/repos/${login}`}>
+          <span>Ver melhores projetos</span>
+        </Link>
+      </LinkProjects>
     </Container>
   );
 };

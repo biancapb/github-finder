@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { UserProps } from "../../types/user";
 import Search from "../../components/Search/Search.tsx";
+import Error from "../../components/Error/Error.tsx";
 
 import User from "../../components/User/User.tsx";
 
 const Home = () => {
   const [user, setUser] = useState<UserProps | null>(null);
+  const [error, setError] = useState(false);
   const loadUser = async (userName: string) => {
+    setError(false);
     const res = await fetch(`https://api.github.com/users/${userName}`);
     const data = await res.json();
     const { avatar_url, login, location, followers, following } = data;
@@ -18,11 +21,18 @@ const Home = () => {
       following,
     };
     setUser(userData);
+
+    if (res.status === 404) {
+      setUser(null);
+      setError(true);
+      return;
+    }
   };
   return (
     <div>
       <Search loadUser={loadUser} />
       {user && <User {...user} />}
+      {error && <Error />}
     </div>
   );
 };
